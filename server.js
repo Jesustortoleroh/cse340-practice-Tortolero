@@ -1,6 +1,4 @@
 // Imports
-import 'dotenv/config';
-import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
