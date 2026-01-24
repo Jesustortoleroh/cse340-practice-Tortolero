@@ -2,6 +2,7 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { title } from 'process';
 /**
  * Declare Important Variables
  */
@@ -63,6 +64,10 @@ app.get('/products', (req, res) => {
     res.render('products', { title });
 });
 
+app.get('/student', (req, res) => {
+    const title = 'Student Information';
+    res.render('student', { title });
+});
 
 // Catch-all route for 404 errors
 app.use((req, res, next) => {
