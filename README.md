@@ -1,6 +1,10 @@
 # cse340-practice-Tortolero
 Practice project for CSE 340
 
+## Project Structure
+The project files and folders are organized as follows:
+
+```
 My-project/
 ├── public/
 │   ├── css/
@@ -19,3 +23,4 @@ My-project/
 │   │   │    └── catalog.js
 │   └── views/
 └── server.js
+```
