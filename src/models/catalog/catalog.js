@@ -93,7 +93,7 @@ const getCourseById = (courseId) => {
 };
 
 const getSortedSections = (sections, sortBy) => {
-    const sortedSections = [sections];
+    const sortedSections = [...sections];
 
     switch (sortBy) {
         case 'professor':
