@@ -7,7 +7,7 @@ const router = Router();
 import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
-import { facultyListPage, facultyDetailPage } from './controllers/faculty/faculty.js';
+import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 // TODO: Add route definitions
 // Home and basic pages
 router.get('/', homePage);
