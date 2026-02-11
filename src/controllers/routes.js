@@ -15,7 +15,7 @@ router.get('/about', aboutPage);
 
 // Course catalog routes
 router.get('/catalog', catalogPage);
-router.get('/catalog/:courseId', courseDetailPage);
+router.get('/catalog/:slugId', courseDetailPage);
 
 // Demo page with special middleware
 router.get('/demo', addDemoHeaders, demoPage);
@@ -25,6 +25,6 @@ router.get('/test-error', testErrorPage);
 
 // Faculty routes
 router.get('/faculty', facultyListPage);
-router.get('/faculty/:facultyId', facultyDetailPage);
+router.get('/faculty/:facultySlug', facultyDetailPage);
 
 export default router;
