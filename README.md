@@ -12,15 +12,22 @@ My-project/
 ├── src/
 │   ├── controllers/
 │   │   ├── catalog/
-│   │   │    └── catalog.js
-│   │   ├── index.js
-│   │   └── routes.js
+│   │   │    └── catalog.js            
+│   │   ├── index.js                   
+│   │   └── routes.js                  
 │   ├── middleware/
 │   │   └── demo/
-│   │   │    └── headers.js
+│   │       └── headers.js
 │   ├── models/
-│   │   └── catalog/
-│   │   │    └── catalog.js
-│   └── views/
-└── server.js
+│   │   ├── db.js                      
+│   │   ├── setup.js                   
+│   │   ├── sql/
+│   │   │   └── seed.sql               
+│   │   ├── catalog/
+│   │   │   ├── catalog.js             
+│   │   │   └── courses.js             
+│   │   └── faculty/
+│   │       └── faculty.js             
+│   └── views/                         
+└── server.js                          
 ```
