@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 // Import MVC components
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
+
+// Import database setup and connection test
 import { setupDatabase, testConnection } from './src/models/setup.js';
 
 /**
