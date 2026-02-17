@@ -9,9 +9,15 @@ router.use('/catalog', (req, res, next) => {
     next();
 });
 
-// Add catalog-specific styles to all catalog routes
+// Add catalog-specific styles to all faculty routes
 router.use('/faculty', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
+    next();
+});
+
+// Add contact-specific styles to all contact routes
+router.use('/contact', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
     next();
 });
 
