@@ -21,12 +21,13 @@ router.use('/contact', (req, res, next) => {
     next();
 });
 
-// TODO: Add import statements for controllers and middleware
+// Import statements for controllers and middleware
 import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
-// TODO: Add route definitions
+import contactRoutes from './forms/contact.js';
+// Route definitions
 // Home and basic pages
 router.get('/', homePage);
 router.get('/about', aboutPage);
@@ -34,6 +35,9 @@ router.get('/about', aboutPage);
 // Course catalog routes
 router.get('/catalog', catalogPage);
 router.get('/catalog/:slugId', courseDetailPage);
+
+// Contact form routes
+router.use('/contact', contactRoutes);
 
 // Demo page with special middleware
 router.get('/demo', addDemoHeaders, demoPage);
