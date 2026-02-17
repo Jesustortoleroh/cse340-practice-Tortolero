@@ -40,6 +40,9 @@ import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
 import registrationRoutes from './forms/registration.js';
+import loginRoutes from './forms/login.js';
+import { processLogout, showDashboard } from './forms/login.js';
+import { requireLogin } from '../middleware/auth.js';
 // Route definitions
 // Home and basic pages
 router.get('/', homePage);
@@ -64,5 +67,12 @@ router.get('/test-error', testErrorPage);
 // Faculty routes
 router.get('/faculty', facultyListPage);
 router.get('/faculty/:facultySlug', facultyDetailPage);
+
+// Login routes (form and submission)
+router.use('/login', loginRoutes);
+
+// Authentication-related routes at root level
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;

@@ -1,0 +1,28 @@
+<%- include('../../partials/header') %>
+<main>
+    <h1><%= title %></h1>
+    <p>
+        Enter your email and password to access your account. Do not have an account? <a href="/register">Register here</a>.
+    </p>
+
+    <form method="POST" action="/login" class="login-form">
+        <!-- Email field -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter a password" required minlength="8" pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*">
+            <div class="help-text">Must be at least 8 characters with a number and special character</div>
+        </div>
+
+        <button type="submit">Login!</button>
+
+        <div class="form-footer">
+            <p>New user? <a href="/register">Create an account</a></p>
+        </div>
+    </form>
+</main>
+<%- include('../../partials/footer') %>
