@@ -37,70 +37,71 @@ const registrationValidation = [
  * Display the registration form page.
  */
 const showRegistrationForm = (req, res) => {
-    res.render('forms/registration/form', {
-        title: 'User Registration'
-    });
+  // Render the registration form view and pass a title
+  res.render('forms/registration/form', {
+    title: 'User Registration',
+  });
 };
 
 /**
  * Handle user registration with validation and password hashing.
  */
 const processRegistration = async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // Log validation errors to console for debugging
+    console.log('[register] validation errors:', errors.array());
+    // Redirect back to /register
+    return res.redirect('/register');
+  }
 
-    if (!errors.isEmpty()) {
-         // Log validation errors for developer debugging
-        console.error('Validation errors:', errors.array());
-        // Redirect back to form without saving
-        return res.redirect('/register');
+  // Extract validated data from request body
+  const { name, email, password } = req.body;
+
+  try {
+    // Check if email already exists in database
+    const exists = await emailExists(email);
+    if (exists) {
+      console.log('[register] Email already registered:', email);
+      return res.redirect('/register');
     }
 
-    // Extract validated data
-    const { name, email, password } = req.body;
+    // Hash the password before saving to database
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log(password)
+    // Save user to database with hashed password
+    await saveUser(name, email, hashedPassword);
 
-    try {
-        // Check if email already exists in database
-        const doesEmailExist = await emailExists(email);
+    console.log('[register] User created OK:', email);
 
-        // if email exists, redirect user back to registration form
-        if (doesEmailExist) {
-            console.log("Email already registered");
-            return res.redirect("/register");
-        }
-
-        // Hash the password before saving to database
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Save user to database with hashed password
-        await saveUser(name, email, hashedPassword);
-
-        res.redirect('/register/list');
-    } catch (error) {
-        console.error('Error saving user:', error);
-        res.redirect('/register');
-    }
+    // Redirect to list page to show successful registration
+    return res.redirect('/register/list');
+  } catch (error) {
+    console.error('[register] Error processing registration:', error);
+    return res.redirect('/register');
+  }
 };
 
 /**
  * Display all registered users.
  */
 const showAllUsers = async (req, res) => {
-    // Initialize users as empty array
-    let users = [];
+  // Initialize users as empty array
+  let users = [];
+  try {
+    // Get all users from DB
+    users = await getAllUsers();
+  } catch (error) {
+    console.error('[register] Error fetching users:', error);
+    // users remains empty array on error
+  }
 
-    try {
-        users = await getAllUsers();
-    } catch (error) {
-        console.error('Error retrieving users:', error);
-    }
-
-    res.render('forms/registration/list', {
-        title: 'Registered Users',
-        users
-    });
+  // Render the users list view
+  res.render('forms/registration/list', {
+    title: 'Registered Users',
+    users,
+  });
 };
 
 /**
