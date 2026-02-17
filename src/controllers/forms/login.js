@@ -55,7 +55,7 @@ const processLogin = async (req, res) => {
         }
 
         const passwordVerification = await verifyPassword(password, user.password);
-        // TODO: Verify password using verifyPassword(password, user.password)
+        // Verify password using verifyPassword(password, user.password)
         if (!passwordVerification) {
             console.log("Invalid password");
             return res.redirect("/login");
