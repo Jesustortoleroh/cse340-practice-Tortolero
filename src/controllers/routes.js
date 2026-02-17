@@ -33,6 +33,7 @@ import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
+import registrationRoutes from './forms/registration.js';
 // Route definitions
 // Home and basic pages
 router.get('/', homePage);
@@ -44,6 +45,9 @@ router.get('/catalog/:slugId', courseDetailPage);
 
 // Contact form routes
 router.use('/contact', contactRoutes);
+
+// Registration routes
+router.use('/register', registrationRoutes);
 
 // Demo page with special middleware
 router.get('/demo', addDemoHeaders, demoPage);
