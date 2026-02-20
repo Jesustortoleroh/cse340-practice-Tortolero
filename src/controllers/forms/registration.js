@@ -24,6 +24,7 @@ const registrationValidation = [
         .withMessage('Email addresses must match'),
     body('password')
         .isLength({ min: 8 })
+        .withMessage('Password must be at least 8 characters')
         .matches(/[0-9]/)
         .withMessage('Password must contain at least one number')
         .matches(/[!@#$%^&*]/)
@@ -37,7 +38,6 @@ const registrationValidation = [
  * Display the registration form page.
  */
 const showRegistrationForm = (req, res) => {
-  // Render the registration form view and pass a title
   res.render('forms/registration/form', {
     title: 'User Registration',
   });
@@ -45,40 +45,42 @@ const showRegistrationForm = (req, res) => {
 
 /**
  * Handle user registration with validation and password hashing.
+ * Uses flash messages for validation, duplicate email, success, and unexpected errors.
  */
 const processRegistration = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
+
+  // 1) VALIDATION ERRORS → flash each error and redirect to /register
   if (!errors.isEmpty()) {
-    // Log validation errors to console for debugging
-    console.log('[register] validation errors:', errors.array());
-    // Redirect back to /register
+    errors.array().forEach(err => {
+      req.flash('error', err.msg);
+    });
     return res.redirect('/register');
   }
 
-  // Extract validated data from request body
+  // Extract validated data
   const { name, email, password } = req.body;
 
   try {
-    // Check if email already exists in database
+    // 2) DUPLICATE EMAIL CHECK → warning flash + redirect
     const exists = await emailExists(email);
     if (exists) {
-      console.log('[register] Email already registered:', email);
+      req.flash('warning', 'An account with that email already exists. Please sign in or use a different email.');
       return res.redirect('/register');
     }
 
-    // Hash the password before saving to database
+    // 3) HASH PASSWORD & SAVE
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Save user to database with hashed password
     await saveUser(name, email, hashedPassword);
 
-    console.log('[register] User created OK:', email);
+    // 4) SUCCESS → flash + redirect to /login
+    req.flash('success', 'Registration successful! You can now sign in.');
+    return res.redirect('/login');
 
-    // Redirect to list page to show successful registration
-    return res.redirect('/register/list');
   } catch (error) {
+    // 5) UNEXPECTED ERROR → keep server log + user-friendly flash
     console.error('[register] Error processing registration:', error);
+    req.flash('error', 'Unable to complete your registration. Please try again later.');
     return res.redirect('/register');
   }
 };
@@ -87,17 +89,15 @@ const processRegistration = async (req, res) => {
  * Display all registered users.
  */
 const showAllUsers = async (req, res) => {
-  // Initialize users as empty array
   let users = [];
   try {
-    // Get all users from DB
     users = await getAllUsers();
   } catch (error) {
     console.error('[register] Error fetching users:', error);
-    // users remains empty array on error
+    // Optional user-facing feedback for this page:
+    req.flash('error', 'Unable to load users right now.');
   }
 
-  // Render the users list view
   res.render('forms/registration/list', {
     title: 'Registered Users',
     users,
