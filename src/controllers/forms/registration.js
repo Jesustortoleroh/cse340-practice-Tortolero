@@ -50,35 +50,35 @@ const showRegistrationForm = (req, res) => {
 const processRegistration = async (req, res) => {
   const errors = validationResult(req);
 
-  // 1) VALIDATION ERRORS → flash each error and redirect to /register
-  if (!errors.isEmpty()) {
-    errors.array().forEach(err => {
-      req.flash('error', err.msg);
+  // Inside your validation error check
+if (!errors.isEmpty()) {
+    // Store each validation error as a separate flash message
+    errors.array().forEach(error => {
+        req.flash('error', error.msg);
     });
     return res.redirect('/register');
-  }
-
+}
   // Extract validated data
   const { name, email, password } = req.body;
 
   try {
-    // 2) DUPLICATE EMAIL CHECK → warning flash + redirect
+    // Check for duplicate email before hashing password
     const exists = await emailExists(email);
     if (exists) {
       req.flash('warning', 'An account with that email already exists. Please sign in or use a different email.');
       return res.redirect('/register');
     }
 
-    // 3) HASH PASSWORD & SAVE
+    // Hash the password and save the user
     const hashedPassword = await bcrypt.hash(password, 10);
     await saveUser(name, email, hashedPassword);
 
-    // 4) SUCCESS → flash + redirect to /login
+    // Successful registration
     req.flash('success', 'Registration successful! You can now sign in.');
     return res.redirect('/login');
 
   } catch (error) {
-    // 5) UNEXPECTED ERROR → keep server log + user-friendly flash
+    // Unexpected error handling
     console.error('[register] Error processing registration:', error);
     req.flash('error', 'Unable to complete your registration. Please try again later.');
     return res.redirect('/register');

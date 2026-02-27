@@ -107,6 +107,7 @@ const processLogout = (req, res) => {
         }
 
         res.clearCookie('connect.sid');
+        req.flash('success', 'You have been logged out successfully.');
         res.redirect('/');
     });
 };

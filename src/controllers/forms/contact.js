@@ -19,7 +19,7 @@ const showContactForm = (req, res) => {
  */
 const handleContactSubmission = async (req, res) => {
     const errors = validationResult(req);
-
+    // Inside your validation error check
     if (!errors.isEmpty()) {
         // Store each validation error as a separate flash message
         errors.array().forEach(error => {
@@ -31,6 +31,7 @@ const handleContactSubmission = async (req, res) => {
     try {
         const { subject, message } = req.body;
         await createContactForm(subject, message);
+        // After successfully saving to the database
         req.flash('success', 'Thank you for contacting us! We will respond soon.');
         res.redirect('/contact');
     } catch (error) {
