@@ -138,10 +138,10 @@
 }
 
 .faculty-photo {
-  width: 100%;
-  width: 25vw;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+   width: 200px;
+   height: 260px;
+   aspect-ratio: 1 / 1;
+   object-fit: cover;
   display: block;
   margin-bottom: 7px;
   background: url('https://placehold.co/480') center / cover no-repeat;
