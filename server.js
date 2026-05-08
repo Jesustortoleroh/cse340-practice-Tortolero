@@ -102,6 +102,39 @@ app.use((req, res, next) => {
     next();
 });
 
+// Global middleware for random theme selection
+app.use((req, res, next) => {
+    const themes = ['blue-theme', 'green-theme', 'red-theme'];
+
+    // Pick a random theme from the array
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+    res.locals.bodyClass = randomTheme;
+
+    next();
+});
+
+// Global middleware to share query parameters with templates
+app.use((req, res, next) => {
+    // Make req.query available to all templates for debugging and conditional rendering
+    res.locals.queryParams = req.query || {};
+
+    next();
+});
+
+// Route-specific middleware that sets custom headers for the demo page
+const addDemoHeaders = (req, res, next) => {
+    res.setHeader('X-Demo-Page', 'true');
+    res.setHeader('X-Middleware-Demo', 'This is a demo page');
+    next();
+};
+
+// Demo page route with header middleware
+app.get('/demo', addDemoHeaders, (req, res) => {
+    res.render('demo', {
+        title: 'Middleware Demo Page'
+    });
+});
+
 
 /**
  * Declare Routes
@@ -144,10 +177,13 @@ app.get('/catalog/:courseId', (req, res, next) => {
         return next(err);
     }
 
+    // Get sort parameter (default to 'time')
     const sortBy = req.query.sort || 'time';
 
+    // Create a copy of sections to sort
     let sortedSections = [...course.sections];
 
+    // Sort based on the parameter
     switch (sortBy) {
         case 'professor':
             sortedSections.sort((a, b) => a.professor.localeCompare(b.professor));
@@ -157,6 +193,7 @@ app.get('/catalog/:courseId', (req, res, next) => {
             break;
         case 'time':
         default:
+            // Keep original time order as default
             break;
     }
 

@@ -7,6 +7,15 @@
     </div>
 
     <div class="sections">
+    <% if (queryParams.sort) { %>
+       <div class="sort-message">
+        <p>Currently sorted by: <%= queryParams.sort %></p>
+    </div>
+    <% } else { %>
+    <div class="sort-message">
+        <p>No sorting applied, using default sorting by time.</p>
+    </div>
+     <% } %>
         <div class="sections-header">
             <h2>Available Sections</h2>
             <div class="sort-options">
