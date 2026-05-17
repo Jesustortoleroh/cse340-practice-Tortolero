@@ -75,10 +75,12 @@ const faculty = {
 };
 
 const getFacultyById = (facultyId) => {
+ // Look up faculty member by ID, return null if not found
     return faculty[facultyId] || null; // Return the faculty member object or null if not found
 };
 
 const getSortedFaculty = (sortBy) => {
+    //Validate sortBy parameter (name, department, or title), default to 'name' if invalid
     const validSort= ['name', 'department', 'title'];
     if (!validSort.includes(sortBy)) {
         sortBy = 'name'; // Default to 'name' if invalid
